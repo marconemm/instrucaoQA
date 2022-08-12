@@ -1,43 +1,34 @@
 package stepsDefinitions;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
-
-import java.util.Dictionary;
-
-
 import br.com.bb.ath.ftabb.exceptions.ElementoNaoLocalizadoException;
-import cucumber.api.PendingException;
+import br.com.bb.ath.ftabb.gaw.Plataforma;
+import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
-
-import br.com.bb.ath.ftabb.gaw.Plataforma;
-import cucumber.api.java.pt.Dado;
 import pagesObjects.AreaTransacional;
 import utils.Constants;
 import utils.Utils;
 import utils.enums.LogTypes;
 import utils.enums.TimesAndReasons;
 
+import java.util.Dictionary;
+
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
+
 public class CenarioTwo {
 
 	private Utils utils;
-
 	private short count;
-
-//	private AreaTransacional areaTransacional;
-
+	private AreaTransacional areaTransacional;
 
 	public CenarioTwo() {
-
 		utils = new Utils();
 		count = 0;
-	//	areaTransacional = new AreaTransacional();
+		areaTransacional = new AreaTransacional();
 	}
-
-	
 
 	@Dado("^que a Plataforma esteja fechada, abra a Plataforma$")
 	public void que_a_Plataforma_esteja_fechada_abra_a_Plataforma() {
@@ -130,7 +121,7 @@ public class CenarioTwo {
 
 	@Dado("^informar o titular \"([^\"]*)\"$")
 	public void informarOTitular(String arg1) throws ElementoNaoLocalizadoException {
-		//areaTransacional.cpf.escrever(arg1);
+		areaTransacional.cpf.escrever(arg1);
 		WebElement input = utils.findElement(By.id("cpfTit"));
 		input.clear();
 		input.sendKeys(arg1);
