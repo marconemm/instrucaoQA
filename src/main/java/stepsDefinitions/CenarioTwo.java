@@ -15,6 +15,7 @@ import org.openqa.selenium.WebElement;
 
 import br.com.bb.ath.ftabb.gaw.Plataforma;
 import cucumber.api.java.pt.Dado;
+import pagesObjects.AreaTransacional;
 import utils.Constants;
 import utils.Utils;
 import utils.enums.LogTypes;
@@ -26,12 +27,16 @@ public class CenarioTwo {
 
 	private short count;
 
+//	private AreaTransacional areaTransacional;
+
+
 	public CenarioTwo() {
 
 		utils = new Utils();
 		count = 0;
+	//	areaTransacional = new AreaTransacional();
 	}
-	
+
 	
 
 	@Dado("^que a Plataforma esteja fechada, abra a Plataforma$")
@@ -124,8 +129,11 @@ public class CenarioTwo {
 	}
 
 	@Dado("^informar o titular \"([^\"]*)\"$")
-	public void informarOTitular(String arg1) {
-
+	public void informarOTitular(String arg1) throws ElementoNaoLocalizadoException {
+		//areaTransacional.cpf.escrever(arg1);
+		WebElement input = utils.findElement(By.id("cpfTit"));
+		input.clear();
+		input.sendKeys(arg1);
 	}
 
 	@Dado("^verificar se o nome do titular é \"([^\"]*)\"$")
