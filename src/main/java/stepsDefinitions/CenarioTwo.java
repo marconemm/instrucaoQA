@@ -2,8 +2,10 @@ package stepsDefinitions;
 
 import br.com.bb.ath.ftabb.exceptions.ElementoNaoLocalizadoException;
 import br.com.bb.ath.ftabb.gaw.Plataforma;
+import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
+import cucumber.api.java.pt.Então;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
@@ -119,12 +121,22 @@ public class CenarioTwo {
 
 	}
 
+	@Então("^logar o título da aplicação aberta$")
+	public void logarOTítuloDaAplicaçãoAberta() {
+	}
+
 	@Dado("^informar o titular \"([^\"]*)\"$")
 	public void informarOTitular(String arg1) throws ElementoNaoLocalizadoException {
+		System.out.println("");
 		areaTransacional.cpf.escrever(arg1);
 		WebElement input = utils.findElement(By.id("cpfTit"));
 		input.clear();
 		input.sendKeys(arg1);
+	}
+
+	@E("^clicar no botao \"([^\"]*)\"$")
+	public void clicarNoBotao(String value)  {
+
 	}
 
 	@Dado("^verificar se o nome do titular é \"([^\"]*)\"$")
@@ -156,6 +168,4 @@ public class CenarioTwo {
 	                fail("O botão \"Login\" não foi carregado corretamente");
 	        }
 	    }
-
-
 }
