@@ -2,7 +2,6 @@ package stepsDefinitions;
 
 import br.com.bb.ath.ftabb.exceptions.ElementoNaoLocalizadoException;
 import br.com.bb.ath.ftabb.gaw.Plataforma;
-import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Então;
@@ -17,9 +16,9 @@ import utils.enums.LogTypes;
 import utils.enums.TimesAndReasons;
 
 import java.util.Dictionary;
+import java.util.List;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class CenarioTwo {
 
@@ -198,12 +197,41 @@ public class CenarioTwo {
 
 	@E("^ordenar ag e cc$")
 	public void ordenarAgECc() {
-		
+
 	}
 
-	@E("^seleciona ag \"([^\"]*)\" e cc \"([^\"]*)\"$")
-	public void selecionaAgECc(String arg0, String arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+	@E("^seleciona ag (\\d+) e cc (\\d+)$")
+	public void selecionaAgECc(int ag, int cc) {
+		final String locator = "//tbody/tr/td";
+		utils.wait(TimesAndReasons.PAGE_LOAD);
+		final List<WebElement> tdElList = utils.findElements(By.xpath(locator));
+		final short STEP_INCREMENT = 5;
+
+		utils.capturaTela();
+		assertNotNull(tdElList);
+
+		for (int tdIndex = 0; tdIndex < tdElList.size(); tdIndex += STEP_INCREMENT) {
+			WebElement tdEl = tdElList.get(tdIndex);
+			String debug = tdEl.getText();
+			final int agFound = Integer.parseInt(debug);
+			final boolean isOnLastTableRow = (tdIndex >= tdElList.size() - STEP_INCREMENT);
+
+			if (agFound == ag) {
+				tdEl = tdElList.get(tdIndex + 1);
+				final int ccFound = Integer.parseInt(tdEl.getText());
+
+				if (ccFound == cc) {
+					tdEl.click();
+					break;
+				}
+			}
+
+			if (isOnLastTableRow) {
+				final String message = "A \"agência " + ag + " e conta " + cc + "\" não foi localizada na tabela de " +
+						"resultados.";
+				utils.log(message, LogTypes.ERROR);
+				fail(message);
+			}
+		}
 	}
 }
