@@ -11,4 +11,6 @@ Funcionalidade: T602533 - H602512 | primeiroBB
     Então logar o título da aplicação aberta
     Quando abrir submenu "Cadastramentos" "CPF/CNPJ"
     E contextualize a ag "18" e cc "1020"
+    E ordenar ag e cc
+    E seleciona ag "18" e cc "1020"
     E verificar se o nome do titular é "Epitacio Da Costa Magalhaes"

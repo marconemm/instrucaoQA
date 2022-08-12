@@ -2,6 +2,7 @@ package stepsDefinitions;
 
 import br.com.bb.ath.ftabb.exceptions.ElementoNaoLocalizadoException;
 import br.com.bb.ath.ftabb.gaw.Plataforma;
+import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Então;
@@ -121,7 +122,9 @@ public class CenarioTwo {
 	}
 
 	@Então("^logar o título da aplicação aberta$")
-	public void logarOTítuloDaAplicaçãoAberta() {
+	public void logarOTítuloDaAplicaçãoAberta() throws ElementoNaoLocalizadoException {
+		utils.log(Plataforma.recuperarTituloPagina(), LogTypes.INFO);
+
 
 	}
 
@@ -134,13 +137,9 @@ public class CenarioTwo {
 		input.sendKeys(arg1);
 	}
 
-	@E("^clicar no botao \"([^\"]*)\"$")
-	public void clicarNoBotao(String value)  {
-
-	}
-
 	@Dado("^verificar se o nome do titular é \"([^\"]*)\"$")
 	public void verificarSeONomeDoTitularÉ(String arg1) {
+
 
 	}
 	
@@ -195,5 +194,16 @@ public class CenarioTwo {
 	@E("^contextualize a ag \"([^\"]*)\" e cc \"([^\"]*)\"$")
 	public void contextualizeAAgECc(String arg0, String arg1) throws ElementoNaoLocalizadoException {
 		Plataforma.pesquisarModalClientePorAgenciaConta(arg0, arg1);
+	}
+
+	@E("^ordenar ag e cc$")
+	public void ordenarAgECc() {
+		
+	}
+
+	@E("^seleciona ag \"([^\"]*)\" e cc \"([^\"]*)\"$")
+	public void selecionaAgECc(String arg0, String arg1) throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		throw new PendingException();
 	}
 }
