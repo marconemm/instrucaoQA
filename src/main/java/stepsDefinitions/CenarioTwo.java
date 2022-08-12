@@ -127,17 +127,12 @@ public class CenarioTwo {
 
 	}
 
-	@Dado("^informar o titular \"([^\"]*)\"$")
-	public void informarOTitular(String arg1) throws ElementoNaoLocalizadoException {
-		System.out.println("");
-		areaTransacional.cpf.escrever(arg1);
-		WebElement input = utils.findElement(By.id("cpfTit"));
-		input.clear();
-		input.sendKeys(arg1);
-	}
 
 	@Dado("^verificar se o nome do titular é \"([^\"]*)\"$")
 	public void verificarSeONomeDoTitularÉ(String arg1) {
+		final WebElement nome = utils.findElement(By.xpath("//*[@id=\"p-panel-1-content\"]/div/div/div[3]/span[2]"));
+		assertEquals(arg1, nome.getText());
+
 
 
 	}
@@ -196,14 +191,17 @@ public class CenarioTwo {
 	}
 
 	@E("^ordenar ag e cc$")
-	public void ordenarAgECc() {
+	public void ordenarAgECc() throws ElementoNaoLocalizadoException {
+		utils.wait(TimesAndReasons.PAGE_LOAD);
+		utils.findElement(By.xpath("//th[@psortablecolumn='conta']")).click();
+
 
 	}
 
 	@E("^seleciona ag (\\d+) e cc (\\d+)$")
 	public void selecionaAgECc(int ag, int cc) {
 		final String locator = "//tbody/tr/td";
-		utils.wait(TimesAndReasons.PAGE_LOAD);
+
 		final List<WebElement> tdElList = utils.findElements(By.xpath(locator));
 		final short STEP_INCREMENT = 5;
 
