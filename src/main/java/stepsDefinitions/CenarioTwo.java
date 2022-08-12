@@ -2,10 +2,10 @@ package stepsDefinitions;
 
 import br.com.bb.ath.ftabb.exceptions.ElementoNaoLocalizadoException;
 import br.com.bb.ath.ftabb.gaw.Plataforma;
-import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Então;
+import cucumber.api.java.pt.Quando;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
@@ -118,11 +118,11 @@ public class CenarioTwo {
 	@E("^abrir aplicacao \"([^\"]*)\" \"([^\"]*)\"$")
 	public void abrirAplicacao(String arg0, String arg1) throws ElementoNaoLocalizadoException {
 		Plataforma.abrirMenu(arg0, arg1);
-
 	}
 
 	@Então("^logar o título da aplicação aberta$")
 	public void logarOTítuloDaAplicaçãoAberta() {
+
 	}
 
 	@Dado("^informar o titular \"([^\"]*)\"$")
@@ -151,21 +151,49 @@ public class CenarioTwo {
 	            case 2:
 	                return Constants.CHAVES.F_2;
 	            default:
-	                return Constants.CHAVES.F_3;
-	        }
-	    }
+					return Constants.CHAVES.F_3;
+			}
+	  }
 
-	    private void clickOnBtnLogin() {
-	        try {
-	            final WebElement elem = utils.waitElementToRender(By.xpath("//input[@id='loginButton_0']"), TimesAndReasons.PAGE_LOAD);
-	            elem.click();
-	            count = 0;
+	private void clickOnBtnLogin() {
+		try {
+			final WebElement elem = utils.waitElementToRender(By.xpath("//input[@id='loginButton_0']"), TimesAndReasons.PAGE_LOAD);
+			elem.click();
+			count = 0;
 
-	        } catch (TimeoutException toe) {
-	            if (++count <= Constants.MAX_SEARCH_ATTEMPTS)
-	                clickOnBtnLogin();
-	            else
-	                fail("O botão \"Login\" não foi carregado corretamente");
-	        }
-	    }
+		} catch (TimeoutException toe) {
+			if (++count <= Constants.MAX_SEARCH_ATTEMPTS)
+				clickOnBtnLogin();
+			else
+				fail("O botão \"Login\" não foi carregado corretamente");
+		}
+	}
+
+	@E("^feche o modal inicial$")
+	public void fecheOModalInicial() {
+		final boolean isInContext = System.getProperty(Constants.CLIENT_MCI) != null;
+		if (!isInContext) {
+			try {
+				final By by = By.cssSelector("div.modal__close");
+				utils.waitElementToRender(by, TimesAndReasons.PAGE_LOAD).click();
+				count = 0;
+
+			} catch (TimeoutException toe) {
+				if (count++ < Constants.MAX_SEARCH_ATTEMPTS)
+					fecheOModalInicial();
+
+				fail(toe.getMessage());
+			}
+		}
+	}
+
+	@Quando("^abrir submenu \"([^\"]*)\" \"([^\"]*)\"$")
+	public void abrirSubmenu(String menu, String subMenu) {
+		utils.openSubMenu(menu, subMenu);
+	}
+
+	@E("^contextualize a ag \"([^\"]*)\" e cc \"([^\"]*)\"$")
+	public void contextualizeAAgECc(String arg0, String arg1) throws ElementoNaoLocalizadoException {
+		Plataforma.pesquisarModalClientePorAgenciaConta(arg0, arg1);
+	}
 }
