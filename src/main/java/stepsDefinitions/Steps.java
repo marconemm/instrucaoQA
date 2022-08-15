@@ -5,7 +5,6 @@ import br.com.bb.ath.ftabb.gaw.Plataforma;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Então;
-import cucumber.api.java.pt.Quando;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
@@ -20,13 +19,13 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class CenarioTwo {
+public class Steps {
 
 	private Utils utils;
 	private short count;
 	private AreaTransacional areaTransacional;
 
-	public CenarioTwo() {
+	public Steps() {
 		utils = new Utils();
 		count = 0;
 		areaTransacional = new AreaTransacional();
@@ -115,16 +114,9 @@ public class CenarioTwo {
 		}
 	}
 
-	@E("^abrir aplicacao \"([^\"]*)\" \"([^\"]*)\"$")
-	public void abrirAplicacao(String arg0, String arg1) throws ElementoNaoLocalizadoException {
-		Plataforma.abrirMenu(arg0, arg1);
-	}
-
 	@Então("^logar o título da aplicação aberta$")
 	public void logarOTítuloDaAplicaçãoAberta() throws ElementoNaoLocalizadoException {
 		utils.log(Plataforma.recuperarTituloPagina(), LogTypes.INFO);
-
-
 	}
 
 
@@ -134,32 +126,6 @@ public class CenarioTwo {
 		assertEquals(arg1, nome.getText());
 
 
-
-	}
-	
-	  private Constants.CHAVES getKey(int key) {
-	        switch (key) {
-	            case 1:
-	                return Constants.CHAVES.F_1;
-	            case 2:
-	                return Constants.CHAVES.F_2;
-	            default:
-					return Constants.CHAVES.F_3;
-			}
-	  }
-
-	private void clickOnBtnLogin() {
-		try {
-			final WebElement elem = utils.waitElementToRender(By.xpath("//input[@id='loginButton_0']"), TimesAndReasons.PAGE_LOAD);
-			elem.click();
-			count = 0;
-
-		} catch (TimeoutException toe) {
-			if (++count <= Constants.MAX_SEARCH_ATTEMPTS)
-				clickOnBtnLogin();
-			else
-				fail("O botão \"Login\" não foi carregado corretamente");
-		}
 	}
 
 	@E("^feche o modal inicial$")
@@ -180,23 +146,6 @@ public class CenarioTwo {
 		}
 	}
 
-	@Quando("^abrir submenu \"([^\"]*)\" \"([^\"]*)\"$")
-	public void abrirSubmenu(String menu, String subMenu) {
-		utils.openSubMenu(menu, subMenu);
-	}
-
-	@E("^contextualize a ag \"([^\"]*)\" e cc \"([^\"]*)\"$")
-	public void contextualizeAAgECc(String arg0, String arg1) throws ElementoNaoLocalizadoException {
-		Plataforma.pesquisarModalClientePorAgenciaConta(arg0, arg1);
-	}
-
-	@E("^ordenar ag e cc$")
-	public void ordenarAgECc() throws ElementoNaoLocalizadoException {
-		utils.wait(TimesAndReasons.PAGE_LOAD);
-		utils.findElement(By.xpath("//th[@psortablecolumn='conta']")).click();
-
-
-	}
 
 	@E("^seleciona ag (\\d+) e cc (\\d+)$")
 	public void selecionaAgECc(int ag, int cc) {
@@ -230,6 +179,31 @@ public class CenarioTwo {
 				utils.log(message, LogTypes.ERROR);
 				fail(message);
 			}
+		}
+	}
+
+	private Constants.CHAVES getKey(int key) {
+		switch (key) {
+			case 1:
+				return Constants.CHAVES.F_1;
+			case 2:
+				return Constants.CHAVES.F_2;
+			default:
+				return Constants.CHAVES.F_3;
+		}
+	  }
+
+	private void clickOnBtnLogin() {
+		try {
+			final WebElement elem = utils.waitElementToRender(By.xpath("//input[@id='loginButton_0']"), TimesAndReasons.PAGE_LOAD);
+			elem.click();
+			count = 0;
+
+		} catch (TimeoutException toe) {
+			if (++count <= Constants.MAX_SEARCH_ATTEMPTS)
+				clickOnBtnLogin();
+			else
+				fail("O botão \"Login\" não foi carregado corretamente");
 		}
 	}
 }

@@ -12,8 +12,8 @@ import utils.Utils;
 @RunWith(Cucumber.class)
 @CucumberOptions(plugin = {"pretty", "io.qameta.allure.cucumber2jvm.AllureCucumber2Jvm"},
         features = "classpath:features/", glue = "classpath:stepsDefinitions",
-        snippets = SnippetType.CAMELCASE, tags = {""}, monochrome = true)
-public class RunnerTeste {
+        snippets = SnippetType.CAMELCASE, tags = {"@PhilipBB"}, monochrome = true)
+public class PhilipTeste {
 
     @AfterClass
     public static void finish() {
