@@ -69,7 +69,7 @@ public abstract class BaseUtils extends FTABBUtils {
     public void log(String msg, LogTypes type) {
         if (msg == null) {
             if (type == LogTypes.START) System.out.println("\n    --- Log START ---");
-            else System.out.println("    --- Log END ---\n");
+            if (type == LogTypes.END ) System.out.println("    --- Log END ---\n");
 
         } else if (type == LogTypes.INFO) System.out.println("\n    INFO - " + msg);
         else if (type == LogTypes.ERROR) System.err.println("\n    ERRO - " + msg);
