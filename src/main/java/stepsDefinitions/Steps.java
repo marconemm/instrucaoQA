@@ -2,14 +2,17 @@ package stepsDefinitions;
 
 import br.com.bb.ath.ftabb.exceptions.ElementoNaoLocalizadoException;
 import br.com.bb.ath.ftabb.gaw.Plataforma;
+import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Então;
+import cucumber.api.java.pt.Quando;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import pagesObjects.AreaTransacional;
 import utils.Constants;
+import utils.JavaScript;
 import utils.Utils;
 import utils.enums.LogTypes;
 import utils.enums.TimesAndReasons;
@@ -206,4 +209,86 @@ public class Steps {
 				fail("O botão \"Login\" não foi carregado corretamente");
 		}
 	}
+
+	@E("^abrir aplicacao \"([^\"]*)\" \"([^\"]*)\"$")
+	public void abrirAplicacao(String arg0, String arg1) throws ElementoNaoLocalizadoException {
+		Plataforma.abrirMenu(arg0, arg1);
+	}
+
+	@E("^verifica se o breadcrumb exibido é \"([^\"]*)\"$")
+	public void verificaSeOBreadcrumbExibidoE(String arg0) {
+		final WebElement elem = utils.findElement(By.xpath("//span[@class='head__context']/span[contains(text(),'"+ arg0 +"')]"));
+		String name_breadcrumb = elem.getText();
+		assertEquals("O título está incorreto", arg0, name_breadcrumb);
+		utils.capturaTela();
+	}
+
+	@E("^abrir submenu \"([^\"]*)\" \"([^\"]*)\"$")
+	public void abrirSubmenu(String arg0, String arg1) {
+		utils.openSubMenu(arg0, arg1);
+	}
+
+	@Então("^contextualize a ag \"([^\"]*)\" e cc \"([^\"]*)\"$")
+	public void contextualizeAAgECc(String arg0, String arg1) throws ElementoNaoLocalizadoException {
+		Plataforma.pesquisarModalClientePorAgenciaConta(arg0, arg1);
+	}
+
+	@Quando("^ordenar ag e cc$")
+	public void ordenarAgECc() {
+		utils.silentWait(5);
+		final WebElement elem = utils.findElement(By.xpath("//*[@id=\"wrapper\"]/div/div/sol-contas-cliente/div/p-table/div/div/table/thead/tr/th[2]"));
+		elem.click();
+		utils.capturaTela();
+	}
+
+	@E("^clicar no radio button Todos$")
+	public void clicarNoRadioButton() {
+		utils.silentWait(5);
+		final WebElement elem = utils.findElement(By.xpath("(//p-radiobutton)[1]"));
+		JavaScript click_botao = new JavaScript();
+		click_botao.clickWithJS(elem);
+	}
+
+	@E("^verifica se o botão \"([^\"]*)\" inicia \"([^\"]*)\"$")
+	public void verificaSeOBotaoInicia(String arg0, String arg1) {
+		String xpath = String.format("//button[@label='%s']", arg0);
+		final WebElement elem = utils.findElement(By.xpath(xpath));
+		if (arg1.intern().equals("ativado")) {
+			assertTrue(elem.isEnabled());
+		}
+		else {
+			assertFalse(elem.isEnabled());
+		}
+	}
+
+	@Então("^logar os registros encontrados$")
+	public void logarOsRegistrosEncontrados() {
+		final String locator = "//tbody/tr/td";
+
+		final List<WebElement> tdElList = utils.findElements(By.xpath(locator));
+		final short STEP_INCREMENT = 5;
+
+		utils.capturaTela();
+		assertNotNull("Não foi encontrado nenhum dado na tabela", tdElList);
+
+		utils.log("", LogTypes.START);
+
+		for (int tdIndex = 0; tdIndex < tdElList.size(); tdIndex += STEP_INCREMENT) {
+
+			WebElement tdEl = tdElList.get(tdIndex);
+			String texto = String.format("Renavam: %s\n", tdEl.getText());
+			tdEl = tdElList.get(tdIndex + 1);
+			texto += String.format("Placa: %s\n", tdEl.getText());
+			tdEl = tdElList.get(tdIndex + 2);
+			texto += String.format("Cadastramento: %s\n", tdEl.getText());
+			tdEl = tdElList.get(tdIndex + 3);
+			texto += String.format("Situação: %s\n", tdEl.getText());
+			tdEl = tdElList.get(tdIndex + 4);
+			texto += String.format("Data da Situação: %s\n", tdEl.getText());
+
+			utils.log(texto, LogTypes.TABLE);
+
+		}
+	}
+
 }
